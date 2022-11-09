@@ -11,7 +11,7 @@ class Item
 {
     //public access specifier - attrivutes accessible outside class
 	public:
-        Item()
+        Item()//Constructor
         {
             name = new char[20];
             float price;
@@ -28,13 +28,13 @@ class Item
 		int get_quantity();
         int is_match(char[]);
 
-    private:
+    private://principle of enncapsulation-to make sure attributes are not accessed outside class
         char *name;
         float price;
         int quantity;
 };
 
-
+//class
 class Inventory
 {
 	public:
@@ -44,8 +44,9 @@ class Inventory
 		void find_item();
 		void edit_item();
 		void list_items();
+		void remove_item(int);
 
-	private:
+	private://principle of enncapsulation-to make sure attributes are not accessed outside class(hide sensitive data)
 		Item *items[20];
 		float total_money = 0.0f;
 		int item_count = 0;
@@ -77,25 +78,25 @@ void Item::display_data()
     cout << "\nPrice: " << price;
 }
 
-//defining method outside class
+//Parameter to return price
 float Item::get_price()
 {
 	return price;
 }
 
-//defining method outside class
+//Parameter to set quantity
 void Item::set_quantity(int new_quantity)
 {
     quantity = new_quantity;
 }
 
-//defining method outside class
+//Parameter to get quantity
 int Item::get_quantity()
 {
 	return quantity;
 }
 
-//defining method outside class
+//Boolean parameter
 int Item::is_match(char object_to_buy[20])
 {
     if (strcmp(object_to_buy, name) == 0)
@@ -141,10 +142,16 @@ void Inventory::sell_item(int item_index)
     {
 		float price = item->get_price();
 		float money_earned = price * input_quantity;
-		item->set_quantity(quantity - input_quantity);
+		int new_quantity = quantity - input_quantity;
+		item->set_quantity(new_quantity);
 		cout << "\nItems sold sucessfully";
 		cout << "\nMoney received: "<< money_earned;
 		total_money += money_earned;
+
+		if (new_quantity == 0)
+        {
+            remove_item(item_index);
+        }
 
 	}
 	else
